@@ -9,5 +9,5 @@
     "arrowParens": "avoid",
     "jsxSingleQuote": true,
     "trailingComma": "all",
-    "endOfLine": "lf"
+    "endOfLine": "auto"
 }
