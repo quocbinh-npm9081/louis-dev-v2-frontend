@@ -1,14 +1,14 @@
-import './App.css';
 import React, { useState, FC, useMemo } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { useTheme } from '@mui/material';
 import darkTheme from './themes/darkTheme';
 import lightTheme from './themes/lightTheme';
 import { PaletteMode } from '@mui/material';
 import { ColorModeContext } from './ColorModeContext';
 import SwitchModeButton from './components/SwitchModeButton ';
+import { Routes, Route } from 'react-router-dom';
+import PageRender from './PageRender';
 const App: FC = () => {
   const [mode, setMode] = useState<PaletteMode>('light');
 
@@ -26,10 +26,13 @@ const App: FC = () => {
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
+        <Routes>
+          <Route path='/:page/:slug' element={<PageRender />} />
+          <Route path='/:page' element={<PageRender />} />
+          <Route path='/' element={<PageRender />} />
+        </Routes>
         <CssBaseline enableColorScheme />
-        <Button variant='contained' color='success'>
-          Hello World
-        </Button>
+
         <SwitchModeButton />
       </ThemeProvider>
     </ColorModeContext.Provider>
