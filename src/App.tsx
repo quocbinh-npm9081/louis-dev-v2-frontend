@@ -1,13 +1,13 @@
 import React, { useState, FC, useMemo } from 'react';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 import darkTheme from './themes/darkTheme';
 import lightTheme from './themes/lightTheme';
+import Header from './components/Header';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { PaletteMode } from '@mui/material';
 import { ColorModeContext } from './ColorModeContext';
-import SwitchModeButton from './components/SwitchModeButton ';
 import { Routes, Route } from 'react-router-dom';
+import SwitchModeButton from './components/SwitchModeButton ';
 import PageRender from './PageRender';
 const App: FC = () => {
   const [mode, setMode] = useState<PaletteMode>('light');
@@ -26,13 +26,13 @@ const App: FC = () => {
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
+        <Header />
         <Routes>
           <Route path='/:page/:slug' element={<PageRender />} />
           <Route path='/:page' element={<PageRender />} />
           <Route path='/' element={<PageRender />} />
         </Routes>
         <CssBaseline enableColorScheme />
-
         <SwitchModeButton />
       </ThemeProvider>
     </ColorModeContext.Provider>
