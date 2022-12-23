@@ -1,6 +1,28 @@
 import React from 'react';
 import { makeStyles, useTheme } from '@mui/styles';
-import { Box, Button, Theme, Typography } from '@mui/material';
+import { Box, Theme, Typography } from '@mui/material';
+import ButtonPrimary from './ButtonPrimary';
+// export type TSelectTypeListStaff =
+//   | 'region'
+//   | 'unit'
+//   | 'department'
+//   | 'division'
+//   | 'restaurant'
+//   | 'position'
+//   | 'level'
+//   | 'outlookMail';
+// export const SelectTypeListStaff: { [key in TSelectTypeListStaff]: TSelectTypeListStaff } = {
+//   region: 'region',
+//   unit: 'unit',
+//   department: 'department',
+//   division: 'division',
+//   restaurant: 'restaurant',
+//   position: 'position',
+//   level: 'level',
+//   outlookMail: 'outlookMail',
+// };
+//   value: SelectTypeListStaff.region,
+
 const useStyles = makeStyles((theme: Theme) => ({
   header: {
     width: '100%',
@@ -21,6 +43,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
 }));
+
 const Header = () => {
   const theme = useTheme();
   const classes = useStyles(theme);
@@ -30,10 +53,8 @@ const Header = () => {
         Louis Q Dev
       </Typography>
       <Box>
-        <Button variant='text' className='btnPrimary'>
-          Đăng nhập
-        </Button>
-        <Button variant='outlined'>Đăng xuất</Button>
+        <ButtonPrimary variant='text'>Đăng nhập</ButtonPrimary>
+        <ButtonPrimary variant='contained'>Đăng xuất</ButtonPrimary>
       </Box>
     </Box>
   );
