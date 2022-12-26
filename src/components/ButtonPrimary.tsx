@@ -1,12 +1,38 @@
 import React from 'react';
-import { Button } from '@mui/material';
+import { Button, Theme } from '@mui/material';
+import { makeStyles, useTheme } from '@mui/styles';
+import LinkRoute from './LinkRoute';
 
-// const type TButtonType  = |  'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning';
+const useStyles = makeStyles((theme: Theme) => ({
+  btnPrimary: {
+    padding: '6px 14px',
+    color: theme.palette.secondary.main,
+    '&:hover': {
+      color: theme.palette.primary.light,
+    },
+  },
+}));
+
 const ButtonPrimary: React.FC<{
   variant: 'text' | 'outlined' | 'contained';
   children: string;
-}> = ({ variant = 'contained', children }) => {
-  return <Button variant={variant}>{children}</Button>;
+  to: string;
+}> = ({ variant = 'contained', children, to }) => {
+  const theme = useTheme();
+  const classes = useStyles(theme);
+  return (
+    <Button
+      variant={variant}
+      sx={{
+        padding: '0!important',
+      }}
+    >
+      <LinkRoute className={classes.btnPrimary} to={to}>
+        {' '}
+        {children}
+      </LinkRoute>
+    </Button>
+  );
 };
 
 export default ButtonPrimary;

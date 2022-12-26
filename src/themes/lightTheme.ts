@@ -4,6 +4,11 @@ const lightTheme: ThemeOptions = {
     mode: 'light',
     primary: {
       main: '#000',
+      dark: '#fff',
+      light: ' #000',
+    },
+    secondary: {
+      main: '#ffff',
     },
   },
 };

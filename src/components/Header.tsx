@@ -1,7 +1,8 @@
 import React from 'react';
 import { makeStyles, useTheme } from '@mui/styles';
 import { Box, Theme, Typography } from '@mui/material';
-import ButtonPrimary from './ButtonPrimary';
+import ActionMenu from './ActionMenu';
+import SearchAppBar from './SearchAppBar';
 // export type TSelectTypeListStaff =
 //   | 'region'
 //   | 'unit'
@@ -31,10 +32,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '3rem 1rem',
-    backgroundColor: '#000',
-    color: '#fff',
+    backgroundColor: theme.palette.common.black,
   },
   logo: {
+    color: theme.palette.common.white,
     fontSize: '2rem',
     fontWeight: 700,
     [theme.breakpoints.down('md')]: {
@@ -52,9 +53,9 @@ const Header = () => {
       <Typography variant='h3' className={classes.logo}>
         Louis Q Dev
       </Typography>
-      <Box>
-        <ButtonPrimary variant='text'>Đăng nhập</ButtonPrimary>
-        <ButtonPrimary variant='contained'>Đăng xuất</ButtonPrimary>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <SearchAppBar />
+        <ActionMenu />
       </Box>
     </Box>
   );
