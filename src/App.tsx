@@ -11,7 +11,7 @@ import SwitchModeButton from './components/SwitchModeButton ';
 import PageRender from './PageRender';
 const App: FC = () => {
   const [mode, setMode] = useState<PaletteMode>('light');
-
+  const [auth, setAuth] = useState<boolean>(false);
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
@@ -26,14 +26,14 @@ const App: FC = () => {
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
-        <Header />
+        <Header auth={auth} />
         <Routes>
           <Route path='/:page/:slug' element={<PageRender />} />
           <Route path='/:page' element={<PageRender />} />
           <Route path='/' element={<PageRender />} />
         </Routes>
         <CssBaseline enableColorScheme />
-        <SwitchModeButton />
+        {auth && <SwitchModeButton />}
       </ThemeProvider>
     </ColorModeContext.Provider>
   );

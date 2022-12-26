@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { makeStyles, useTheme } from '@mui/styles';
 import { Box, Theme, Typography } from '@mui/material';
+import FromProvider from './HookForm/FromProvider';
 import ActionMenu from './ActionMenu';
 import SearchAppBar from './SearchAppBar';
 // export type TSelectTypeListStaff =
@@ -27,7 +28,7 @@ import SearchAppBar from './SearchAppBar';
 const useStyles = makeStyles((theme: Theme) => ({
   header: {
     width: '100%',
-    height: '2rem',
+    height: '1.8rem',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -44,8 +45,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
 }));
-
-const Header = () => {
+const defaultValues = {
+  search: '',
+};
+const Header: FC<{ auth: boolean }> = ({ auth }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
   return (
@@ -53,10 +56,14 @@ const Header = () => {
       <Typography variant='h3' className={classes.logo}>
         Louis Q Dev
       </Typography>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <SearchAppBar />
-        <ActionMenu />
-      </Box>
+      {auth && (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <FromProvider defaultValues={defaultValues} mode='onChange'>
+            <SearchAppBar />
+          </FromProvider>
+          <ActionMenu />
+        </Box>
+      )}
     </Box>
   );
 };

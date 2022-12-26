@@ -3,7 +3,7 @@ import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-
+import { useFormContext, Controller } from 'react-hook-form';
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -46,14 +46,23 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+interface IFormValues {
+  search: string;
+}
+
 const SearchAppBar = () => {
+  const { control } = useFormContext();
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Search>
         <SearchIconWrapper>
           <SearchIcon />
         </SearchIconWrapper>
-        <StyledInputBase placeholder='Search…' inputProps={{ 'aria-label': 'search' }} />
+        <Controller
+          name='search'
+          control={control}
+          render={({ field }) => <StyledInputBase {...field} placeholder='Search…' inputProps={{ 'aria-label': 'search' }} />}
+        />
       </Search>
     </Box>
   );
