@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '3rem 1rem',
     backgroundColor: theme.palette.common.black,
   },
+  headerCenter: {
+    justifyContent: 'center!important',
+  },
   logo: {
     color: theme.palette.common.white,
     fontSize: '2rem',
@@ -52,7 +55,7 @@ const Header: FC<{ auth: boolean }> = ({ auth }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
   return (
-    <Box className={classes.header}>
+    <Box className={auth ? classes.header : `${classes.header} ${classes.headerCenter}`}>
       <Typography variant='h3' className={classes.logo}>
         Louis Q Dev
       </Typography>
