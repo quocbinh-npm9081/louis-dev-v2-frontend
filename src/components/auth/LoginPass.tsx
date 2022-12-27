@@ -8,7 +8,8 @@ import * as yup from 'yup';
 import ButtonPrimary from '../ButtonPrimary';
 import LinkRoute from '../LinkRoute';
 import CheckBoxIconShowHiden from '../CheckBoxIconShowHiden';
-const validation = yup.object().shape({
+import { IUserSubmit } from '../../redux/types';
+const validationShema = yup.object().shape({
   account: yup.string().required('Vui lòng nhập email hoặc số điện thoại đầy đủ !'),
   password: yup.string().required('Vui lòng nhập mật khẩu !'),
 });
@@ -44,8 +45,19 @@ const LoginPass = () => {
   const theme = useTheme();
   const classes = useStyles(theme);
   const [checked, setChecked] = useState<boolean>(false);
+
+  const onSubmit = (data: IUserSubmit) => {
+    console.log(data);
+  };
+
   return (
-    <FromProvider defaultValues={defaultValues} mode='onSubmit' className={classes.formSubmit} validation={validation}>
+    <FromProvider
+      defaultValues={defaultValues}
+      mode='onSubmit'
+      className={classes.formSubmit}
+      validationShema={validationShema}
+      onSubmit={onSubmit}
+    >
       <TextFieldControll name='account' label='Email/ Số điện thoại' autoComplete='email' />
       <Box position='relative' width='100%'>
         <TextFieldControll name='password' label='Mật khẩu' type={checked ? 'text' : 'password'} autoComplete='current-password' />

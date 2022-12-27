@@ -1,4 +1,4 @@
-export interface userSubmit {
+export interface IUserSubmit {
   account: string;
   password: string;
 }

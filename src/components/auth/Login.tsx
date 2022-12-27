@@ -7,8 +7,9 @@ import * as yup from 'yup';
 import ButtonPrimary from '../ButtonPrimary';
 import LinkRoute from '../LinkRoute';
 import CheckBoxIconShowHiden from '../CheckBoxIconShowHiden';
-import { login } from '../../redux/actions/authActions';
-import { userSubmit } from '../../redux/types';
+import { IUserSubmit } from '../../redux/types';
+import login from '../../redux/slices/authSlice';
+import { useDispatch } from 'react-redux';
 const validationShema = yup.object().shape({
   account: yup.string().required('Vui lòng nhập email hoặc số điện thoại đầy đủ !'),
   password: yup.string().required('Vui lòng nhập mật khẩu !'),
@@ -44,10 +45,7 @@ const Login = () => {
   const theme = useTheme();
   const classes = useStyles(theme);
   const [checked, setChecked] = useState<boolean>(false);
-  // const dispatch = useAppDispatch();
-  const onSubmit = (user: userSubmit) => {
-    // dispatch(login(user));
-  };
+  const onSubmit = (user: IUserSubmit) => {};
   return (
     <FromProvider
       onSubmit={onSubmit}
