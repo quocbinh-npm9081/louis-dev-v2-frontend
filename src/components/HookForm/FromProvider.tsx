@@ -1,35 +1,45 @@
 import React from 'react';
 import { useForm, FormProvider as Form } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 interface IFormProvider {
-  mode?: 'onBlur' | 'onChange' | 'onSubmit' | 'onTouched';
-  defaultValues: any;
+  mode?: 'onBlur' | 'onChange' | 'onSubmit' | 'onTouched' | undefined;
+  defaultValues: { [x: string]: string | number | any };
   children: React.ReactNode;
   className?: string;
-  validation?: any;
+  validationShema?: any;
+  onSubmit: (data: any) => void;
+  reset?: boolean;
 }
 
-const FromProvider: React.FC<IFormProvider> = ({ mode, defaultValues, validation, children, className }) => {
+const FromProvider: React.FC<IFormProvider> = ({ mode, defaultValues, validationShema, children, className, onSubmit }) => {
   const menthods = useForm({
     mode: mode,
-    resolver: yupResolver(validation),
+    resolver: yupResolver(validationShema),
     defaultValues: defaultValues,
+    reValidateMode: 'onChange',
   });
   const {
     handleSubmit,
     reset,
+    getValues,
     formState: { isSubmitSuccessful },
   } = menthods;
 
-  const onsubmit = (data: any) => {
-    if (isSubmitSuccessful) reset(defaultValues);
-    console.log('data', data);
-  };
+  const onsubmit = handleSubmit(async values => {
+    const formValues = getValues();
+    try {
+      onSubmit && onSubmit(values);
+      if (reset && isSubmitSuccessful) reset(defaultValues);
+    } catch (error) {
+      reset(formValues);
+    }
+  });
 
   return (
     <Form {...menthods}>
-      <form onSubmit={handleSubmit(onsubmit)} className={className}>
+      <form onSubmit={onsubmit} className={className}>
         {children}
       </form>
     </Form>

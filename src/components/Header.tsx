@@ -54,6 +54,9 @@ const defaultValues = {
 const Header: FC<{ auth: boolean }> = ({ auth }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
+  const onSubmit = (data: any) => {
+    console.log('data: ', data);
+  };
   return (
     <Box className={auth ? classes.header : `${classes.header} ${classes.headerCenter}`}>
       <Typography variant='h3' className={classes.logo}>
@@ -61,7 +64,7 @@ const Header: FC<{ auth: boolean }> = ({ auth }) => {
       </Typography>
       {auth && (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <FromProvider defaultValues={defaultValues} mode='onChange'>
+          <FromProvider onSubmit={onSubmit} defaultValues={defaultValues} mode='onChange'>
             <SearchAppBar />
           </FromProvider>
           <ActionMenu />
