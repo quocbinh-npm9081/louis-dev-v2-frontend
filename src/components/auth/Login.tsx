@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Grid, Typography, Theme } from '@mui/material';
+import { Box, Typography, Theme } from '@mui/material';
 import { makeStyles, useTheme } from '@mui/styles';
 import TextFieldControll from '../HookForm/TextFieldControll';
 import FromProvider from '../HookForm/FromProvider';
@@ -8,16 +8,19 @@ import ButtonPrimary from '../ButtonPrimary';
 import LinkRoute from '../LinkRoute';
 import CheckBoxIconShowHiden from '../CheckBoxIconShowHiden';
 import { IUserSubmit } from '../../redux/types';
-import login from '../../redux/slices/authSlice';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { loginAction } from '../../redux/slices/authSlice';
+
 const validationShema = yup.object().shape({
   account: yup.string().required('Vui lòng nhập email hoặc số điện thoại đầy đủ !'),
   password: yup.string().required('Vui lòng nhập mật khẩu !'),
 });
+
 const defaultValues = {
   account: '',
   password: '',
 };
+
 const useStyles = makeStyles((theme: Theme) => ({
   formSubmit: {
     display: 'flex',
@@ -41,11 +44,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     right: 0,
   },
 }));
+
 const Login = () => {
   const theme = useTheme();
   const classes = useStyles(theme);
   const [checked, setChecked] = useState<boolean>(false);
-  const onSubmit = (user: IUserSubmit) => {};
+  const dispatch = useAppDispatch();
+
+  const onSubmit = (user: IUserSubmit) => {
+    dispatch(loginAction(user));
+  };
+
   return (
     <FromProvider
       onSubmit={onSubmit}

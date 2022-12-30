@@ -1,10 +1,10 @@
 import React from 'react';
-import LoginPass from '../components/auth/Login';
+import RegisterForm from '../components/auth/Register';
 import WrapperOnePage from '../components/WrapperOnePage';
 const Register = () => {
   return (
     <WrapperOnePage>
-      <LoginPass />
+      <RegisterForm />
     </WrapperOnePage>
   );
 };
