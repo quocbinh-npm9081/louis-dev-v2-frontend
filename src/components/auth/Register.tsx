@@ -11,10 +11,12 @@ import { IUserSubmit } from '../../redux/types';
 import login from '../../redux/slices/authSlice';
 import { useDispatch } from 'react-redux';
 const validationShema = yup.object().shape({
+  name: yup.string().required('Tên người dùng không được bỏ trống !'),
   account: yup.string().required('Vui lòng nhập email hoặc số điện thoại đầy đủ !'),
   password: yup.string().required('Vui lòng nhập mật khẩu !'),
 });
 const defaultValues = {
+  name: '',
   account: '',
   password: '',
 };
@@ -56,6 +58,8 @@ const Register = () => {
       className={classes.formSubmit}
       validationShema={validationShema}
     >
+      <TextFieldControll name='name' label='Tên người dùng' autoComplete='name' />
+
       <TextFieldControll name='account' label='Email/ Số điện thoại' autoComplete='email' />
       <Box position='relative' width='100%'>
         <TextFieldControll name='password' label='Mật khẩu' type={checked ? 'text' : 'password'} autoComplete='current-password' />

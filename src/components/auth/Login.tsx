@@ -8,12 +8,13 @@ import ButtonPrimary from '../ButtonPrimary';
 import LinkRoute from '../LinkRoute';
 import CheckBoxIconShowHiden from '../CheckBoxIconShowHiden';
 import { IUserSubmit } from '../../redux/types';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { useAppDispatch } from '../../redux/hooks';
 import { loginAction } from '../../redux/slices/authSlice';
-
+import { toastNotiError, toastNotiSuccess } from '../../utils/toastNotifycation';
+import { ALERT_LOGIN_SUCCESS_vn } from '../../redux/types/alert';
 const validationShema = yup.object().shape({
-  account: yup.string().required('Vui lòng nhập email hoặc số điện thoại đầy đủ !'),
-  password: yup.string().required('Vui lòng nhập mật khẩu !'),
+  account: yup.string().email('Vui lòng nhập email chinh xác !').required('Vui lòng nhập email hoặc số điện thoại đầy đủ !'),
+  password: yup.string().min(6, 'Mật khẩu phải hơn 6 kí tự !').required('Vui lòng nhập mật khẩu !'),
 });
 
 const defaultValues = {
@@ -51,8 +52,19 @@ const Login = () => {
   const [checked, setChecked] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
+  const handleDispatch = async (user: IUserSubmit) => {
+    const resultDispatch = await dispatch(loginAction(user));
+    if (loginAction.fulfilled.match(resultDispatch)) {
+      const message = ALERT_LOGIN_SUCCESS_vn;
+      toastNotiSuccess(message, 'light');
+    } else if (loginAction.rejected.match(resultDispatch)) {
+      const response: any = resultDispatch.payload;
+      toastNotiError(String(response.error), 'light');
+    }
+  };
+
   const onSubmit = (user: IUserSubmit) => {
-    dispatch(loginAction(user));
+    handleDispatch(user);
   };
 
   return (

@@ -7,6 +7,7 @@ export interface IInitialStateAuth {
   isLoading: boolean;
   currentUser: any;
   accessToken: string;
+  message: string;
 }
 
 export interface IUser extends IUserSubmit {

@@ -1,4 +1,5 @@
-import React, { useState, FC, useMemo } from 'react';
+import React, { useState, FC, useMemo, useEffect } from 'react';
+import { useAppSelector } from './redux/hooks';
 import CssBaseline from '@mui/material/CssBaseline';
 import darkTheme from './themes/darkTheme';
 import lightTheme from './themes/lightTheme';
@@ -9,9 +10,12 @@ import { ColorModeContext } from './ColorModeContext';
 import { Routes, Route } from 'react-router-dom';
 import SwitchModeButton from './components/SwitchModeButton ';
 import PageRender from './PageRender';
+import 'react-toastify/dist/ReactToastify.css';
+
 const App: FC = () => {
   const [mode, setMode] = useState<PaletteMode>('light');
   const [auth, setAuth] = useState<boolean>(false);
+  const accessToken = useAppSelector(state => state.auth.accessToken);
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
@@ -22,6 +26,12 @@ const App: FC = () => {
   );
 
   const theme = useMemo(() => (mode === 'light' ? createTheme(lightTheme) : createTheme(darkTheme)), [mode]);
+
+  useEffect(() => {
+    console.log('accessToken:', accessToken);
+    if (accessToken) setAuth(true);
+    else setAuth(false);
+  }, [accessToken]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
