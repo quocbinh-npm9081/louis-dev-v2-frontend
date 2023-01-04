@@ -28,7 +28,6 @@ const App: FC = () => {
   const theme = useMemo(() => (mode === 'light' ? createTheme(lightTheme) : createTheme(darkTheme)), [mode]);
 
   useEffect(() => {
-    console.log('accessToken:', accessToken);
     if (accessToken) setAuth(true);
     else setAuth(false);
   }, [accessToken]);

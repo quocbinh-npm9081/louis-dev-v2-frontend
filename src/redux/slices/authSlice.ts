@@ -1,19 +1,19 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IInitialStateAuth, ILoginResponse, IUserSubmit } from '../types';
-import { loginApi } from '../../http/auth';
+import { IInitialStateAuth, ILoginResponse, IUserLoginSubmit, IUserRegisterSubmit } from '../types';
+import { postApi } from '../../http/auth';
 import { RootState } from '../store';
 import {
-  ALERT_LOGIN_SUCCESS_en,
-  ALERT_LOGIN_SUCCESS_vn,
+  ALERT_REGISTER_ACCOUNT_EXISTS_en,
+  ALERT_REGISTER_ACCOUNT_EXISTS_vn,
   ALERT_USER_NOT_FOUND_en,
   ALERT_USER_NOT_FOUND_vn,
   ALERT_USER_PASS_WRONG_en,
   ALERT_USER_PASS_WRONG_vn,
 } from '../types/alert';
 
-export const loginAction = createAsyncThunk(`auth/login`, async (user: IUserSubmit, thunkAPI) => {
+export const loginAction = createAsyncThunk('auth/login', async (user: IUserLoginSubmit, thunkAPI) => {
   try {
-    const res = loginApi('/api/auth/login', user);
+    const res = postApi('/api/auth/login', user);
     return (await res).data;
   } catch (error: any) {
     const statusCode = error.response.status;
@@ -24,6 +24,22 @@ export const loginAction = createAsyncThunk(`auth/login`, async (user: IUserSubm
     } else if (msg == ALERT_USER_PASS_WRONG_en) {
       errorMessage = ALERT_USER_PASS_WRONG_vn;
     }
+    return thunkAPI.rejectWithValue({ error: errorMessage, status: statusCode });
+  }
+});
+
+export const registerAction = createAsyncThunk('auth/register', async (user: IUserRegisterSubmit, thunkAPI) => {
+  try {
+    const res = postApi('/api/auth/register', user);
+    return (await res).data;
+  } catch (error: any) {
+    const statusCode = error.response.status;
+    const msg = error.response.data.msg;
+    let errorMessage = '';
+    if (msg == ALERT_REGISTER_ACCOUNT_EXISTS_en) {
+      errorMessage = ALERT_REGISTER_ACCOUNT_EXISTS_vn;
+    }
+
     return thunkAPI.rejectWithValue({ error: errorMessage, status: statusCode });
   }
 });
@@ -42,6 +58,7 @@ export const authSlice = createSlice({
   reducers: {},
   // Code logic xử lý async action
   extraReducers(builder) {
+    //LOGIN
     builder.addCase(loginAction.pending, state => {
       state.isLoading = true;
     });
@@ -52,6 +69,16 @@ export const authSlice = createSlice({
       state.accessToken = action.payload.access_token;
     });
     builder.addCase(loginAction.rejected, (state, action: any) => {
+      state.isLoading = false;
+    });
+    //REGISTER
+    builder.addCase(registerAction.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(registerAction.fulfilled, state => {
+      state.isLoading = false;
+    });
+    builder.addCase(registerAction.rejected, state => {
       state.isLoading = false;
     });
   },

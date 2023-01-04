@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import ButtonPrimary from '../ButtonPrimary';
 import LinkRoute from '../LinkRoute';
 import CheckBoxIconShowHiden from '../CheckBoxIconShowHiden';
-import { IUserSubmit } from '../../redux/types';
+import { IUserLoginSubmit } from '../../redux/types';
 import { useAppDispatch } from '../../redux/hooks';
 import { loginAction } from '../../redux/slices/authSlice';
 import { toastNotiError, toastNotiSuccess } from '../../utils/toastNotifycation';
@@ -52,7 +52,7 @@ const Login = () => {
   const [checked, setChecked] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
-  const handleDispatch = async (user: IUserSubmit) => {
+  const handleDispatch = async (user: IUserLoginSubmit) => {
     const resultDispatch = await dispatch(loginAction(user));
     if (loginAction.fulfilled.match(resultDispatch)) {
       const message = ALERT_LOGIN_SUCCESS_vn;
@@ -63,7 +63,7 @@ const Login = () => {
     }
   };
 
-  const onSubmit = (user: IUserSubmit) => {
+  const onSubmit = (user: IUserLoginSubmit) => {
     handleDispatch(user);
   };
 

@@ -1,6 +1,6 @@
 import http from '.';
-import { IUserSubmit } from '../redux/types';
-export const loginApi = async (url: string, user: IUserSubmit, token?: string) => {
+import { IUserLoginSubmit } from '../redux/types';
+export const postApi = async (url: string, user: IUserLoginSubmit, token?: string) => {
   const res = await http.post(url, user, {
     headers: {
       Authorization: token,

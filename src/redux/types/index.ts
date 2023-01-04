@@ -1,8 +1,11 @@
-export interface IUserSubmit {
+export interface IUserLoginSubmit {
   account: string;
   password: string;
 }
-
+export interface IUserRegisterSubmit extends IUserLoginSubmit {
+  name: string;
+  confirmPassword?: string;
+}
 export interface IInitialStateAuth {
   isLoading: boolean;
   currentUser: any;
@@ -10,7 +13,7 @@ export interface IInitialStateAuth {
   message: string;
 }
 
-export interface IUser extends IUserSubmit {
+export interface IUser extends IUserLoginSubmit {
   _id: string;
   avatar: string;
   name: string;
