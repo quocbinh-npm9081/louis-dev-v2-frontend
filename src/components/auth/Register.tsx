@@ -6,12 +6,13 @@ import FromProvider from '../HookForm/FromProvider';
 import * as yup from 'yup';
 import ButtonPrimary from '../ButtonPrimary';
 import LinkRoute from '../LinkRoute';
-import CheckBoxIconShowHiden from '../CheckBoxIconShowHiden';
 import { IUserRegisterSubmit } from '../../redux/types';
 import { useAppDispatch } from '../../redux/hooks';
 import { registerAction } from '../../redux/slices/authSlice';
 import { toastNotiError, toastNotiSuccess } from '../../utils/toastNotifycation';
-useAppDispatch;
+import { ALERT_VERIFY_ACCOUNT_vn } from '../../redux/types/alert';
+import { useForm } from 'react-hook-form';
+
 const validationShema = yup.object().shape({
   name: yup
     .string()
@@ -42,20 +43,15 @@ const useStyles = makeStyles((theme: Theme) => ({
       textDecoration: 'underline',
     },
   },
-  iconShowHidenPassword: {
-    position: 'absolute',
-    zIndex: 10,
-    top: '50%',
-    transform: 'translateY(-50%)',
-    right: 0,
-  },
 }));
 
 const Register = () => {
   const theme = useTheme();
   const classes = useStyles(theme);
   const [checked, setChecked] = useState<boolean>(false);
+  const [verifing, setVerifying] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+  const { getValues } = useForm();
 
   const onSubmit = ({ name, account, password }: IUserRegisterSubmit) => {
     const user = { name, account, password };
@@ -65,11 +61,21 @@ const Register = () => {
           const response: any = data.payload;
           toastNotiError(String(response.error), 'light');
         } else if (registerAction.fulfilled.match(data)) {
-          toastNotiError('Đăng kí thành công !', 'light');
+          setVerifying(true);
+          toastNotiSuccess(String(ALERT_VERIFY_ACCOUNT_vn), 'light');
         }
       })
       .catch(err => console.log(err));
   };
+  if (verifing) {
+    console.log(getValues());
+
+    return (
+      <Box>
+        <Typography>Xác nhận Email </Typography>
+      </Box>
+    );
+  }
   return (
     <FromProvider
       onSubmit={onSubmit}
@@ -81,10 +87,8 @@ const Register = () => {
       <TextFieldControll name='name' label='Tên người dùng' autoComplete='name' />
       <TextFieldControll name='account' label='Email/ Số điện thoại' autoComplete='email' />
       <Box position='relative' width='100%'>
-        <TextFieldControll name='password' label='Mật khẩu' type={checked ? 'text' : 'password'} autoComplete='current-password' />
-        <CheckBoxIconShowHiden checked={checked} setChecked={setChecked} className={classes.iconShowHidenPassword} />
+        <TextFieldControll name='password' label='Mật khẩu' type='password' autoComplete='current-password' />
       </Box>
-
       <Box position='relative' width='100%'>
         <TextFieldControll name='confirmPassword' label='Nhập lại mật khẩu' type='password' autoComplete='confirmPassword-password' />{' '}
       </Box>

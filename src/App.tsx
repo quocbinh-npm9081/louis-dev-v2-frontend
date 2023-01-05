@@ -1,4 +1,4 @@
-import React, { useState, FC, useMemo, useEffect } from 'react';
+import React, { useState, FC, useMemo, useEffect, lazy } from 'react';
 import { useAppSelector } from './redux/hooks';
 import CssBaseline from '@mui/material/CssBaseline';
 import darkTheme from './themes/darkTheme';
@@ -10,6 +10,7 @@ import { ColorModeContext } from './ColorModeContext';
 import { Routes, Route } from 'react-router-dom';
 import SwitchModeButton from './components/SwitchModeButton ';
 import PageRender from './PageRender';
+// const PageRender = lazy(() => import('./PageRender'));
 import 'react-toastify/dist/ReactToastify.css';
 
 const App: FC = () => {

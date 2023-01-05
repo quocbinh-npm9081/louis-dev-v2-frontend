@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Typography, Theme } from '@mui/material';
 import { makeStyles, useTheme } from '@mui/styles';
 import TextFieldControll from '../HookForm/TextFieldControll';
@@ -6,7 +6,6 @@ import FromProvider from '../HookForm/FromProvider';
 import * as yup from 'yup';
 import ButtonPrimary from '../ButtonPrimary';
 import LinkRoute from '../LinkRoute';
-import CheckBoxIconShowHiden from '../CheckBoxIconShowHiden';
 import { IUserLoginSubmit } from '../../redux/types';
 import { useAppDispatch } from '../../redux/hooks';
 import { loginAction } from '../../redux/slices/authSlice';
@@ -16,12 +15,10 @@ const validationShema = yup.object().shape({
   account: yup.string().email('Vui lòng nhập email chinh xác !').required('Vui lòng nhập email hoặc số điện thoại đầy đủ !'),
   password: yup.string().min(6, 'Mật khẩu phải hơn 6 kí tự !').required('Vui lòng nhập mật khẩu !'),
 });
-
 const defaultValues = {
   account: '',
   password: '',
 };
-
 const useStyles = makeStyles((theme: Theme) => ({
   formSubmit: {
     display: 'flex',
@@ -37,19 +34,10 @@ const useStyles = makeStyles((theme: Theme) => ({
       textDecoration: 'underline',
     },
   },
-  iconShowHidenPassword: {
-    position: 'absolute',
-    zIndex: 10,
-    top: '50%',
-    transform: 'translateY(-50%)',
-    right: 0,
-  },
 }));
-
 const Login = () => {
   const theme = useTheme();
   const classes = useStyles(theme);
-  const [checked, setChecked] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
   const handleDispatch = async (user: IUserLoginSubmit) => {
@@ -77,8 +65,7 @@ const Login = () => {
     >
       <TextFieldControll name='account' label='Email/ Số điện thoại' autoComplete='email' />
       <Box position='relative' width='100%'>
-        <TextFieldControll name='password' label='Mật khẩu' type={checked ? 'text' : 'password'} autoComplete='current-password' />
-        <CheckBoxIconShowHiden checked={checked} setChecked={setChecked} className={classes.iconShowHidenPassword} />
+        <TextFieldControll name='password' label='Mật khẩu' type='password' autoComplete='current-password' />
       </Box>
       <Box padding='0.5rem .1rem'>
         <Box>

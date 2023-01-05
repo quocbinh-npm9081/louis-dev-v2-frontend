@@ -7,12 +7,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   btnPrimary: {
     padding: '6px 14px',
     color: theme.palette.secondary.main,
+    width: '100%',
     '&:hover': {
-      color: theme.palette.primary.light,
+      color: theme.palette.primary.dark,
     },
     [theme.breakpoints.down('sm')]: {
       '&:hover': {
-        color: '#fff',
+        color: '#000',
       },
     },
   },

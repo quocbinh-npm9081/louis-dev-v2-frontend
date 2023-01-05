@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
+import CheckBoxIconShowHiden from '../CheckBoxIconShowHiden';
 interface ITextFieldControl {
   name: string;
   defaultValue?: string;
@@ -21,26 +22,30 @@ const TextFieldControll: React.FC<ITextFieldControl> = ({
     control,
     formState: { errors },
   } = useFormContext();
+  const [checked, setChecked] = useState<boolean>(false);
 
   return (
-    <Controller
-      name={name}
-      control={control}
-      defaultValue={defaultValue}
-      render={({ field }) => (
-        <TextField
-          fullWidth
-          className={className}
-          label={label}
-          {...field}
-          error={!!errors[name]}
-          helperText={errors[name] ? String(errors[name]?.message) : ''}
-          margin='dense'
-          autoComplete={autoComplete}
-          type={type}
-        />
-      )}
-    />
+    <>
+      <Controller
+        name={name}
+        control={control}
+        defaultValue={defaultValue}
+        render={({ field }) => (
+          <TextField
+            fullWidth
+            className={className}
+            label={label}
+            {...field}
+            error={!!errors[name]}
+            helperText={errors[name] ? String(errors[name]?.message) : ''}
+            margin='dense'
+            autoComplete={autoComplete}
+            type={type}
+          />
+        )}
+      />
+      {name === 'password' && <CheckBoxIconShowHiden checked={checked} setChecked={setChecked} />}
+    </>
   );
 };
 

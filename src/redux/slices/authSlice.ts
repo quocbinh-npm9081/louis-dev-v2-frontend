@@ -39,8 +39,19 @@ export const registerAction = createAsyncThunk('auth/register', async (user: IUs
     if (msg == ALERT_REGISTER_ACCOUNT_EXISTS_en) {
       errorMessage = ALERT_REGISTER_ACCOUNT_EXISTS_vn;
     }
-
     return thunkAPI.rejectWithValue({ error: errorMessage, status: statusCode });
+  }
+});
+
+export const activeAccount = createAsyncThunk('auth/active', async (active_token: string, thunkAPI) => {
+  try {
+    const res = postApi('/api/auth/active', active_token);
+    return (await res).data;
+  } catch (error: any) {
+    const statusCode = error.response.status;
+    const msg = error.response.data.msg;
+
+    return thunkAPI.rejectWithValue({ error: msg, status: statusCode });
   }
 });
 
@@ -79,6 +90,16 @@ export const authSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(registerAction.rejected, state => {
+      state.isLoading = false;
+    });
+    //ACTIVE ACCOUT
+    builder.addCase(activeAccount.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(activeAccount.fulfilled, state => {
+      state.isLoading = false;
+    });
+    builder.addCase(activeAccount.rejected, state => {
       state.isLoading = false;
     });
   },

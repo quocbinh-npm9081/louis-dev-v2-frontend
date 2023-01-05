@@ -14,7 +14,8 @@ const generatePage = (name: string) => {
 const PageRender = () => {
   const { page, slug } = useParams();
   let name = '';
-  if (page) name = slug ? `${page}/${slug}` : `${page}`;
+  if (page) name = slug ? `${page}/[slug]` : `${page}`;
+
   return generatePage(name);
 };
 
