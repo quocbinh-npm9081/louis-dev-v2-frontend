@@ -4,6 +4,7 @@ import { Box, Theme, Typography } from '@mui/material';
 import FromProvider from './HookForm/FromProvider';
 import ActionMenu from './ActionMenu';
 import SearchAppBar from './SearchAppBar';
+import LinkRoute from './LinkRoute';
 // export type TSelectTypeListStaff =
 //   | 'region'
 //   | 'unit'
@@ -62,7 +63,7 @@ const Header: FC<{ auth: boolean }> = ({ auth }) => {
   return (
     <Box className={auth ? classes.header : `${classes.header} ${classes.headerCenter}`}>
       <Typography variant='h3' className={classes.logo}>
-        Louis Q Dev
+        <LinkRoute to='/'> Louis Q Dev</LinkRoute>
       </Typography>
       {auth && (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>

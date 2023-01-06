@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Typography, Theme } from '@mui/material';
 import { makeStyles, useTheme } from '@mui/styles';
+import { useNavigate } from 'react-router-dom';
 import TextFieldControll from '../HookForm/TextFieldControll';
 import FromProvider from '../HookForm/FromProvider';
 import * as yup from 'yup';
 import ButtonPrimary from '../ButtonPrimary';
 import LinkRoute from '../LinkRoute';
 import { IUserLoginSubmit } from '../../redux/types';
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { loginAction } from '../../redux/slices/authSlice';
 import { toastNotiError, toastNotiSuccess } from '../../utils/toastNotifycation';
 import { ALERT_LOGIN_SUCCESS_vn } from '../../redux/types/alert';
@@ -35,16 +36,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
 }));
+
 const Login = () => {
   const theme = useTheme();
   const classes = useStyles(theme);
   const dispatch = useAppDispatch();
+  const history = useNavigate();
+  const { accessToken } = useAppSelector(state => state.auth);
 
   const handleDispatch = async (user: IUserLoginSubmit) => {
     const resultDispatch = await dispatch(loginAction(user));
     if (loginAction.fulfilled.match(resultDispatch)) {
       const message = ALERT_LOGIN_SUCCESS_vn;
-      toastNotiSuccess(message, 'light');
+      history('/', { state: { message: message } });
+      // toastNotiSuccess(message, 'light');
     } else if (loginAction.rejected.match(resultDispatch)) {
       const response: any = resultDispatch.payload;
       toastNotiError(String(response.error), 'light');
@@ -54,6 +59,12 @@ const Login = () => {
   const onSubmit = (user: IUserLoginSubmit) => {
     handleDispatch(user);
   };
+
+  useEffect(() => {
+    if (accessToken) {
+      history('/');
+    }
+  }, [accessToken]);
 
   return (
     <FromProvider

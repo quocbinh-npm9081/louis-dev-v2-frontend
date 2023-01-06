@@ -40,7 +40,7 @@ const TextFieldControll: React.FC<ITextFieldControl> = ({
             helperText={errors[name] ? String(errors[name]?.message) : ''}
             margin='dense'
             autoComplete={autoComplete}
-            type={type}
+            type={checked ? type : 'text'}
           />
         )}
       />

@@ -7,7 +7,7 @@ interface ILink {
 }
 const LinkRoute: FC<ILink> = ({ to, children, className }) => {
   return (
-    <Link className={className} to={to}>
+    <Link className={className} to={to} style={{ color: 'inherit' }}>
       {children}
     </Link>
   );

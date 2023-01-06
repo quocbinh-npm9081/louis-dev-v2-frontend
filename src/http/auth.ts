@@ -8,3 +8,11 @@ export const postApi = async (url: string, body: IUserLoginSubmit | string, toke
   });
   return res;
 };
+export const getApi = async (url: string, token?: string) => {
+  const res = await http.get(url, {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return res;
+};

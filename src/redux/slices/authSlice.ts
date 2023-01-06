@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IInitialStateAuth, ILoginResponse, IUserLoginSubmit, IUserRegisterSubmit } from '../types';
-import { postApi } from '../../http/auth';
+import { getApi, postApi } from '../../http/auth';
 import { RootState } from '../store';
 import {
   ALERT_REGISTER_ACCOUNT_EXISTS_en,
@@ -14,6 +14,8 @@ import {
 export const loginAction = createAsyncThunk('auth/login', async (user: IUserLoginSubmit, thunkAPI) => {
   try {
     const res = postApi('/api/auth/login', user);
+    const access_token = (await res).data.access_token;
+    localStorage.setItem('logged', access_token);
     return (await res).data;
   } catch (error: any) {
     const statusCode = error.response.status;
@@ -50,9 +52,21 @@ export const activeAccount = createAsyncThunk('auth/active', async (active_token
   } catch (error: any) {
     const statusCode = error.response.status;
     const msg = error.response.data.msg;
-
     return thunkAPI.rejectWithValue({ error: msg, status: statusCode });
   }
+});
+
+export const refeshToken = createAsyncThunk('auth/refeshToken', async () => {
+  const access_token = localStorage.getItem('logged');
+  if (!access_token) {
+    try {
+      const res = getApi('/api/auth/refresh_token');
+      return (await res).data;
+    } catch (error: any) {
+      console.log(error);
+      return false;
+    }
+  } else return true;
 });
 
 const initialState: IInitialStateAuth = {
@@ -100,6 +114,16 @@ export const authSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(activeAccount.rejected, state => {
+      state.isLoading = false;
+    });
+    //REFESH TOKEN
+    builder.addCase(refeshToken.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(refeshToken.fulfilled, state => {
+      state.isLoading = false;
+    });
+    builder.addCase(refeshToken.rejected, state => {
       state.isLoading = false;
     });
   },
