@@ -56,15 +56,18 @@ export const activeAccount = createAsyncThunk('auth/active', async (active_token
   }
 });
 
-export const refeshToken = createAsyncThunk('auth/refeshToken', async () => {
+export const refeshToken = createAsyncThunk('auth/refeshToken', async (_, thunkAPI) => {
   const access_token = localStorage.getItem('logged');
   if (!access_token) {
     try {
       const res = getApi('/api/auth/refresh_token');
-      return (await res).data;
+      const data = (await res).data;
+      console.log('res', data);
+      return data;
     } catch (error: any) {
-      console.log(error);
-      return false;
+      const statusCode = error.response.status;
+      const msg = error.response.data.msg;
+      return thunkAPI.rejectWithValue({ error: msg, status: statusCode });
     }
   } else return true;
 });

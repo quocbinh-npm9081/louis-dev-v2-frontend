@@ -1,5 +1,5 @@
 import React, { useState, FC, useMemo, useEffect, lazy } from 'react';
-import { useAppDispatch } from './redux/hooks';
+import { useAppDispatch, useAppSelector } from './redux/hooks';
 import CssBaseline from '@mui/material/CssBaseline';
 import darkTheme from './themes/darkTheme';
 import lightTheme from './themes/lightTheme';
@@ -11,6 +11,7 @@ import { Routes, Route } from 'react-router-dom';
 import { refeshToken } from './redux/slices/authSlice';
 import SwitchModeButton from './components/SwitchModeButton ';
 import PageRender from './PageRender';
+import { ALERT_REFRESH_TOKEN_DIE } from './redux/types/alert';
 // const PageRender = lazy(() => import('./PageRender'));
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -18,6 +19,7 @@ const App: FC = () => {
   const [mode, setMode] = useState<PaletteMode>('light');
   const [auth, setAuth] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+  const { accessToken } = useAppSelector(state => state.auth);
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
@@ -30,8 +32,18 @@ const App: FC = () => {
   const theme = useMemo(() => (mode === 'light' ? createTheme(lightTheme) : createTheme(darkTheme)), [mode]);
 
   useEffect(() => {
-    dispatch(refeshToken());
-  }, []);
+    console.log('check access token and refesh token');
+
+    dispatch(refeshToken())
+      .then((data: any) => {
+        const error = data.payload.error;
+        if (error === ALERT_REFRESH_TOKEN_DIE) {
+          setAuth(false);
+          console.log('refesh token die');
+        } else setAuth(true);
+      })
+      .catch((error: any) => console.log(error));
+  }, [accessToken, dispatch]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>

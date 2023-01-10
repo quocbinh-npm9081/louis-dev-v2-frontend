@@ -49,7 +49,6 @@ const Login = () => {
     if (loginAction.fulfilled.match(resultDispatch)) {
       const message = ALERT_LOGIN_SUCCESS_vn;
       history('/', { state: { message: message } });
-      // toastNotiSuccess(message, 'light');
     } else if (loginAction.rejected.match(resultDispatch)) {
       const response: any = resultDispatch.payload;
       toastNotiError(String(response.error), 'light');
@@ -61,10 +60,8 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (accessToken) {
-      history('/');
-    }
-  }, [accessToken]);
+    if (accessToken) history('/');
+  }, [accessToken, history]);
 
   return (
     <FromProvider

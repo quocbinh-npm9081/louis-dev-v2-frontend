@@ -6,7 +6,7 @@ import { ToastContainer } from 'react-toastify';
 const Home = () => {
   const { state } = useLocation();
   useEffect(() => {
-    console.log('render');
+    console.log('Home render');
 
     if (state) toastNotiSuccess(state.message, 'light');
   }, [state]);
