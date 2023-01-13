@@ -58,10 +58,9 @@ const Login = () => {
   const onSubmit = (user: IUserLoginSubmit) => {
     handleDispatch(user);
   };
-
   useEffect(() => {
     if (accessToken) history('/');
-  }, [accessToken, history]);
+  }, [history, accessToken]);
 
   return (
     <FromProvider

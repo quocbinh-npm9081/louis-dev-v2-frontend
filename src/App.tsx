@@ -11,7 +11,7 @@ import { Routes, Route } from 'react-router-dom';
 import { refeshToken } from './redux/slices/authSlice';
 import SwitchModeButton from './components/SwitchModeButton ';
 import PageRender from './PageRender';
-import { ALERT_REFRESH_TOKEN_DIE } from './redux/types/alert';
+import { ALERT_REFRESH_TOKEN_DIE, ALERT_REFRESH_TOKEN_EXPIRE_en } from './redux/types/alert';
 // const PageRender = lazy(() => import('./PageRender'));
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -32,14 +32,17 @@ const App: FC = () => {
   const theme = useMemo(() => (mode === 'light' ? createTheme(lightTheme) : createTheme(darkTheme)), [mode]);
 
   useEffect(() => {
-    console.log('check access token and refesh token');
+    console.log('check accessToken');
 
     dispatch(refeshToken())
       .then((data: any) => {
         const error = data.payload.error;
+        console.log('error: ', data);
+
         if (error === ALERT_REFRESH_TOKEN_DIE) {
           setAuth(false);
-          console.log('refesh token die');
+        } else if (error === ALERT_REFRESH_TOKEN_EXPIRE_en) {
+          setAuth(false);
         } else setAuth(true);
       })
       .catch((error: any) => console.log(error));

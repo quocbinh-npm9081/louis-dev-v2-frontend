@@ -58,11 +58,11 @@ export const activeAccount = createAsyncThunk('auth/active', async (active_token
 
 export const refeshToken = createAsyncThunk('auth/refeshToken', async (_, thunkAPI) => {
   const access_token = localStorage.getItem('logged');
+
   if (!access_token) {
     try {
       const res = getApi('/api/auth/refresh_token');
       const data = (await res).data;
-      console.log('res', data);
       return data;
     } catch (error: any) {
       const statusCode = error.response.status;
@@ -123,8 +123,9 @@ export const authSlice = createSlice({
     builder.addCase(refeshToken.pending, state => {
       state.isLoading = true;
     });
-    builder.addCase(refeshToken.fulfilled, state => {
+    builder.addCase(refeshToken.fulfilled, (state, action: PayloadAction<ILoginResponse>) => {
       state.isLoading = false;
+      state.accessToken = action.payload.access_token;
     });
     builder.addCase(refeshToken.rejected, state => {
       state.isLoading = false;

@@ -18,3 +18,4 @@ export const ALERT_JWT_EXPIRE_en = 'jwt expired !';
 export const ALERT_JWT_EXPIRE_vn = 'Thời gian xác nhận đã hết !';
 
 export const ALERT_REFRESH_TOKEN_DIE = 'Please login again refesh token die !';
+export const ALERT_REFRESH_TOKEN_EXPIRE_en = 'jwt expired';
